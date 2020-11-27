@@ -31,7 +31,7 @@ urlpatterns = [
     path("reply_insert", views.reply_insert),
     path('update', views.update),
     path('delete', views.delete),
-    
-
+    path('main',views.main),
+    path('movie_save',views.movie_save),
 
 ]

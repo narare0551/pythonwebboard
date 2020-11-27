@@ -1,5 +1,7 @@
-from django.db import models
 from datetime import datetime
+
+from django.db import models
+
 class Board(models.Model):
     #autofield라서 자동 증가 되고 primary key 가 됩니다. 
     idx=models.AutoField(primary_key=True)
@@ -34,3 +36,11 @@ class Comment(models.Model):
     writer=models.CharField(null=False,max_length=50)
     content=models.TextField(null=False)
     post_date=models.DateTimeField(default=datetime.now,blank=True)
+    
+    
+class Movie(models.Model):
+#자동증가하는 primarykey를 index로 설정한다. 
+    idx=models.AutoField(primary_key=True)
+    title=models.CharField(null=False, max_length=500)
+    content=models.TextField(null=False)
+    point=models.IntegerField(default=0)
