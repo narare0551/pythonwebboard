@@ -10,17 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-#날짜 포맷 변경을 위한 모듈 로딩
-from django.conf.locale.ko import formats as ko_formats
-#날짜 포맷 설정
-ko_formats.DATETIME_FORMAT = 'Y-m-d G:i:s'
-import pymysql
-import MySQLdb 
 from pathlib import Path
+from django.conf.locale.ko import formats as ko_formats
+
+import MySQLdb
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+TEMPLATE_DIR=os.path.join(BASE_DIR, 'board/templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -131,3 +128,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'board/static')
+

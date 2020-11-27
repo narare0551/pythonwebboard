@@ -1,18 +1,20 @@
-import math
-import os
-
+from django.shortcuts import render,redirect
 from anaconda_navigator.utils.py3compat import request
-from django.contrib.sessions.backends import file
-from django.db.models.query_utils import Q
-from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.utils.http import urlquote
+from board.models import Board,Comment,Movie
 from django.views.decorators.csrf import csrf_exempt
-
+import os
+from django.utils.http import urlquote
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.db.models import Q
+import math
 from board import bigdataPro
-from board.models import Board, Comment , Movie
+from django.db.models.aggregates import Avg
+import pandas as pd
 
-
+def cctv_map(request):
+    bigdataPro.cctv_map()
+    
+    return render(request, "map/map01.html")
 def main(request):
     return render(request,"main.html")
 
@@ -24,7 +26,21 @@ def movie_save(request):
             dto=Movie(title=row[0],point=int(row[1]),content=row[2])
             dto.save()
     return redirect('/')
-
+def chart(request):
+    
+    #sql='select title,avg(point) points from board_movie group by title'
+    #data=Movie.objects.raw(sql)
+    data=Movie.objects.values('title').annotate(point_avg=Avg('point'))[0:10]
+    df=pd.DataFrame(data)
+    bigdataPro.make_graph(df.title, df.point_avg)
+    return render(request,"chart.html",{"data":data})
+def wordcloud(request):
+    content=Movie.objects.values('content')
+    df=pd.DataFrame(content)
+    bigdataPro.saveWordcloud(df.content)
+    return render(request,'wordcloud.html',{'content':df.content})
+    
+    #return render(request,"chart.html")
 def list(request):
     boardCount=Board.objects.count()
 #board table에 있는 모든 record를 다 가져오고 idx별로 역순으로 정렬해라 

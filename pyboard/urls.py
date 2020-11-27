@@ -33,5 +33,8 @@ urlpatterns = [
     path('delete', views.delete),
     path('main',views.main),
     path('movie_save',views.movie_save),
+    path('chart',views.chart),
+    path('wordcloud', views.wordcloud),
+    path('map',views.cctv_map),
 
 ]
